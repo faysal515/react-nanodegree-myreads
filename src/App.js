@@ -24,7 +24,7 @@ class Routes extends React.Component {
 
   searchBooks(query) {
     console.log(this)
-    BooksAPI.search(query, 100) //max result being 100
+    return BooksAPI.search(query, 100) //max result being 100
       .then(res => {
         console.log(res)
         this.setState({
@@ -57,22 +57,6 @@ class Routes extends React.Component {
         mine: [...mine]
       })
     }
-    // need to find if the book is already in the shelf
-    /*if (!book.status) { // book has been added from search option with no previous records
-      let newBook = {...book}
-      newBook.status = event.target.value
-
-      mine[event.target.value] = mine[event.target.value].concat(newBook) //immutable
-      this.setState({
-        mine: mine
-      })
-
-    }
-    else {
-      let index = mine[event.target.value].findIndex(b => b.id === book.id)
-      console.log(index)
-    }*/
-
 
   }
 

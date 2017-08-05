@@ -1,5 +1,6 @@
 import React from 'react'
 import Book from './book'
+import Loader from './loader'
 
 import {
   Link
@@ -7,11 +8,20 @@ import {
 import * as BooksAPI from '../BooksAPI'
 
 export default class Search extends React.Component {
-
+  constructor(props) {
+    super(props)
+    this.state = {
+      loading: false
+    }
+  }
   submitHandler(e) {
     e.preventDefault()
     console.log(this.refs.search.value)
+    this.setState({loading: true})
     this.props.search(this.refs.search.value)
+      .then(r => {
+        this.setState({loading: false})
+      })
   }
 
   defaultBookStatus(book) {
@@ -42,14 +52,15 @@ export default class Search extends React.Component {
 
         </div>
       </div>
-      <div className="search-books-results">
+      {!this.state.loading ?
+        <div className="search-books-results animate-bottom">
         <ol className="books-grid">
           {searchResults.length > 0 ? searchResults.map((b) => {
             let status = this.defaultBookStatus(b)
             return <li key={b.id}>{Book(b,this.props.changeStatus, status)}</li>
           }) : null}
         </ol>
-      </div>
+      </div> : Loader()}
     </div>
   }
 }
