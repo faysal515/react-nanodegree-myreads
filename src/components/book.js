@@ -1,6 +1,7 @@
 import React from 'react'
 
 const Book = (book,change,status) => {
+  console.log(book.authors)
   return <div className="book">
     <div className="book-top">
       <div className="book-cover"
@@ -16,7 +17,7 @@ const Book = (book,change,status) => {
       </div>
     </div>
     <div className="book-title">{book.title}</div>
-    <div className="book-authors">{book.authors[0]}</div>
+    <div className="book-authors">{book.authors ? book.authors[0]: 'not found'}</div>
   </div>
 }
 
