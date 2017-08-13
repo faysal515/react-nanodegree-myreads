@@ -23,7 +23,7 @@ export default class Search extends React.Component {
         this.setState({loading: false})
       })
   }
-  
+
   // &#x2713;
 
   render() {
