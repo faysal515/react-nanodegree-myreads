@@ -3,10 +3,12 @@ import {Link} from 'react-router-dom'
 import Book from './book'
 export default class BookList extends React.Component {
   render() {
-    let current = this.props.mine.filter(b => b.status === 'current'),
-      want = this.props.mine.filter(b => b.status === 'want'),
-      read = this.props.mine.filter(b => b.status === 'read')
 
+    let current = this.props.allBooks.filter(b => b.shelf === 'currentlyReading'),
+      want = this.props.allBooks.filter(b => b.shelf === 'wantToRead'),
+      read = this.props.allBooks.filter(b => b.shelf === 'read')
+
+    // console.log('re RENDER', current.length, want.length, read.length)
     return <div className="list-books">
       <div className="list-books-title">
         <h1>MyReads</h1>
@@ -17,7 +19,7 @@ export default class BookList extends React.Component {
             <h2 className="bookshelf-title">Currently Reading</h2>
             <div className="bookshelf-books">
               <ol className="books-grid">
-                {current.map(b => <li key={b.id}>{Book(b,this.props.changeStatus,b.status)}</li>)}
+                {current.map(b => <li key={b.id}>{Book(b,this.props.changeStatus,b.shelf)}</li>)}
               </ol>
             </div>
           </div>
@@ -25,7 +27,7 @@ export default class BookList extends React.Component {
             <h2 className="bookshelf-title">Want to Read</h2>
             <div className="bookshelf-books">
               <ol className="books-grid">
-                {want.map(b => <li key={b.id}>{Book(b,this.props.changeStatus,b.status)}</li>)}
+                {want.map(b => <li key={b.id}>{Book(b,this.props.changeStatus,b.shelf)}</li>)}
               </ol>
             </div>
           </div>
@@ -33,7 +35,7 @@ export default class BookList extends React.Component {
             <h2 className="bookshelf-title">Read</h2>
             <div className="bookshelf-books">
               <ol className="books-grid">
-                {read.map(b => <li key={b.id}>{Book(b,this.props.changeStatus,b.status)}</li>)}
+                {read.map(b => <li key={b.id}>{Book(b,this.props.changeStatus,b.shelf)}</li>)}
               </ol>
             </div>
           </div>

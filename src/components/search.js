@@ -23,12 +23,7 @@ export default class Search extends React.Component {
         this.setState({loading: false})
       })
   }
-
-  defaultBookStatus(book) {
-    let isExist = this.props.mine.find(m => m.id === book.id)
-    return isExist ? isExist.status : ``
-  }
-
+  
   // &#x2713;
 
   render() {
@@ -56,8 +51,8 @@ export default class Search extends React.Component {
         <div className="search-books-results animate-bottom">
         <ol className="books-grid">
           {searchResults.length > 0 ? searchResults.map((b) => {
-            let status = this.defaultBookStatus(b)
-            return <li key={b.id}>{Book(b,this.props.changeStatus, status)}</li>
+            // let status = this.defaultBookStatus(b)
+            return <li key={b.id}>{Book(b,this.props.changeStatus, b.shelf)}</li>
           }) : null}
         </ol>
       </div> : Loader()}

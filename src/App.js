@@ -18,17 +18,37 @@ class Routes extends React.Component {
     super(props)
     this.state = {
       searchResults: [],
-      mine: []
+      allBooks: []
     }
+  }
+
+  componentDidMount() {
+    BooksAPI.getAll()
+      .then(res => {
+        console.log('my book loaded ', res)
+        this.setState({allBooks: res})
+      })
   }
 
   searchBooks(query) {
     console.log(this)
+    let {allBooks} = this.state
     return BooksAPI.search(query, 100) //max result being 100
       .then(res => {
-        console.log(res)
+        if(res.error) {
+          console.log('search failed', res)
+          return
+        }
+
+        let syncBookData = res.map(book => {
+          let hasFoundInList = allBooks.findIndex(b => b.id === book.id)
+          if(hasFoundInList > -1) {
+            book.shelf = allBooks[hasFoundInList].shelf
+          }
+          return book
+        })
         this.setState({
-          searchResults: res
+          searchResults: syncBookData
         })
       })
       .catch(err => {
@@ -39,25 +59,42 @@ class Routes extends React.Component {
   changeStatus(event, book) {
     console.log('changing...', book.title, event.target.value)
     // console.log(this)
-    let {mine} = this.state
-    let index = mine.findIndex(b => b.id === book.id)
+    let {allBooks, searchResults} = this.state
+    let index = allBooks.findIndex(b => b.id === book.id)
+    let searchListindex = searchResults.findIndex(b => b.id === book.id)
     let newBook = {...book}
-    newBook.status = event.target.value
+    newBook.shelf = event.target.value
     console.log(index)
 
-    if(index === -1) {
-      console.log('in if block')
-      this.setState({
-        mine: [...mine,newBook]
-      })
-    } else {
-      console.log('in else block')
-      mine[index] = newBook
-      this.setState({
-        mine: [...mine]
-      })
-    }
+    BooksAPI.update(book, event.target.value)
+      .then(updated => {
+        console.log('book updated', updated)
+        index === -1 ? this.appendBookList('allBooks',newBook) : this.updateBookList('allBooks',newBook, index)
+        if(searchListindex !== -1) {
+          this.updateBookList('searchResults', newBook, searchListindex)
+          console.log('change search result too!')
+        }
 
+      })
+
+  }
+
+  /*
+  * changing bookshelf status dynamically
+  * */
+  updateBookList(stateName, book,index) {
+    console.log('here ', stateName, book.title, index)
+    let list = [...this.state[stateName]]
+    list[index] = book
+    this.setState({
+      [stateName] : list
+    })
+  }
+
+  appendBookList(stateName,book) {
+    this.setState({
+      [stateName] : [...this.state[stateName], book]
+    })
   }
 
 
