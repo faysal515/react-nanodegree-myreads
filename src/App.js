@@ -20,6 +20,8 @@ class Routes extends React.Component {
       searchResults: [],
       allBooks: []
     }
+    this.searchBooks = this.searchBooks.bind(this);
+    this.changeStatus = this.changeStatus.bind(this)
   }
 
   componentDidMount() {
@@ -102,14 +104,14 @@ class Routes extends React.Component {
     return <Router>
       <Switch>
         <Route exact path='/' render={(props) => (
-          <BookList {...props} {...this.state} changeStatus={this.changeStatus.bind(this)}/>
+          <BookList {...props} {...this.state} changeStatus={this.changeStatus}/>
         )}/>
 
 
         <Route exact path="/search" render={props => (
           <Search {...props} {...this.state}
-                  search={this.searchBooks.bind(this)}
-                  changeStatus={this.changeStatus.bind(this)}
+                  search={this.searchBooks}
+                  changeStatus={this.changeStatus}
           />
         )}/>
 

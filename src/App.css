@@ -180,6 +180,8 @@ body, .app {
   height: 120px;
   animation: spin 2s linear infinite;
   align-content: center;
+  margin: auto;
+  margin-top: 80px;
 }
 
 @keyframes spin {

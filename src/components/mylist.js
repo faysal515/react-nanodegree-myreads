@@ -1,6 +1,9 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import Book from './book'
+import BookShelf from './bookshelf'
+
+
+
 export default class BookList extends React.Component {
   render() {
 
@@ -15,30 +18,9 @@ export default class BookList extends React.Component {
       </div>
       <div className="list-books-content">
         <div>
-          <div className="bookshelf">
-            <h2 className="bookshelf-title">Currently Reading</h2>
-            <div className="bookshelf-books">
-              <ol className="books-grid">
-                {current.map(b => <li key={b.id}>{Book(b,this.props.changeStatus,b.shelf)}</li>)}
-              </ol>
-            </div>
-          </div>
-          <div className="bookshelf">
-            <h2 className="bookshelf-title">Want to Read</h2>
-            <div className="bookshelf-books">
-              <ol className="books-grid">
-                {want.map(b => <li key={b.id}>{Book(b,this.props.changeStatus,b.shelf)}</li>)}
-              </ol>
-            </div>
-          </div>
-          <div className="bookshelf">
-            <h2 className="bookshelf-title">Read</h2>
-            <div className="bookshelf-books">
-              <ol className="books-grid">
-                {read.map(b => <li key={b.id}>{Book(b,this.props.changeStatus,b.shelf)}</li>)}
-              </ol>
-            </div>
-          </div>
+          <BookShelf books={current} title={`Currently Reading`} changeStatus={this.props.changeStatus} />
+          <BookShelf books={want} title={`Want to Read`} changeStatus={this.props.changeStatus} />
+          <BookShelf books={read} title={`Read`} changeStatus={this.props.changeStatus} />
         </div>
       </div>
       <div className="open-search">
